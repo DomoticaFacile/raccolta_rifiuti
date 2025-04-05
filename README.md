@@ -51,7 +51,7 @@ Per far funzionare correttamente l'integrazione, è necessario creare manualment
 3. Seleziona **"Calendario Locale"**
 4. Assegna il nome **`raccolta_rifiuti`** (esattamente così)
 
-5. - Inserire nel calendario (il giorno prima della raccolta) i rifiuti che verranno raccolti e l'orario 
+5. Inserire nel calendario (il giorno prima della raccolta) i rifiuti che verranno raccolti e l'orario 
 quando la card deve mostrare i contenitori (E' possibile inserire: Carta, Plastica, Vetro, Umido, Indifferenziato).
 
 La logica è: se ogni lunedi raccolgono carta e vetro, crea due eventi la domenica,
