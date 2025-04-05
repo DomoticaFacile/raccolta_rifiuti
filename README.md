@@ -38,6 +38,8 @@ sensor:
     calendar_entity_id: calendar.raccolta_rifiuti
 ```
 
+Riavvia Home Assistant
+
 ---
 
 📆 **Creazione del calendario locale**   (manuale)
