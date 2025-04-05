@@ -1,0 +1,9 @@
+{
+  "domain": "raccolta_rifiuti",
+  "name": "Raccolta Rifiuti",
+  "version": "1.0.0",
+  "requirements": [],
+  "codeowners": ["@DomoticaFacile"],
+  "iot_class": "local_polling",
+  "integration_type": "integration"
+}
