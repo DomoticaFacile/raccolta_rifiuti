@@ -110,6 +110,7 @@ card:
 
     </div>
 ```
+Riavvia Home Assistant
 
 ---
 
