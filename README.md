@@ -117,6 +117,8 @@ Riavvia Home Assistant
 
 ![image](https://github.com/user-attachments/assets/3b0a8c7b-7e09-4b59-b57e-f7fd8e57a3ae)
 
+![image](https://github.com/user-attachments/assets/bd05df5b-f3ab-4b87-b041-7eba9fef88be)
+
 ---
 
 👨‍💻 Sviluppatore
