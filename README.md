@@ -113,6 +113,11 @@ card:
 Riavvia Home Assistant
 
 ---
+🖼️Screenshots
+
+![image](https://github.com/user-attachments/assets/3b0a8c7b-7e09-4b59-b57e-f7fd8e57a3ae)
+
+---
 
 👨‍💻 Sviluppatore
 
