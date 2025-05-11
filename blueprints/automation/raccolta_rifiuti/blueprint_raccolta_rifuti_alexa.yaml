@@ -29,12 +29,12 @@ trigger:
 condition:
   - condition: template
     value_template: >
-      {{ (state_attr('sensor.raccolta_rifiuti', 'collection_types') or []) | length > 0 }}
+      {{ (state_attr('sensor.prossima_raccolta_rifiuti', 'collection_types') or []) | length > 0 }}
 
 action:
   - variables:
       messaggio: >-
-        {% set val = state_attr('sensor.raccolta_rifiuti', 'collection_types') %}
+        {% set val = state_attr('sensor.prossima_raccolta_rifiuti', 'collection_types') %}
         {% set raccolta = [val] if val is string else (val or []) %}
         {% set tipi = raccolta | join(', ') if raccolta else 'nessun tipo di rifiuto definito' %}
         Domani si raccoglie: {{ tipi }}.
