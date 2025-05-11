@@ -113,6 +113,21 @@ card:
     </div>
 ```
 Riavvia Home Assistant
+---
+### 📘 Blueprint (facoltativo ma consigliati)
+
+Per usare i blueprint inclusi:
+
+1. Crea la cartella:
+   `config/blueprints/automation/raccolta_rifiuti/`
+
+2. Copia i file YAML da questa cartella del repository:
+   [`blueprints/automation/raccolta_rifiuti/`](https://github.com/TUO_REPO/blueprints/automation/raccolta_rifiuti)
+
+3. Riavvia Home Assistant o ricarica le automazioni.
+
+👉 Dopo il riavvio, troverai i blueprint disponibili in:
+**Impostazioni > Automazioni e Scenari > + Crea automazione**
 
 ---
 🖼️Screenshots
