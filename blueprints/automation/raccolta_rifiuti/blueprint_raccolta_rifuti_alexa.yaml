@@ -1,0 +1,50 @@
+blueprint:
+  name: Annuncio raccolta rifiuti con Alexa
+  description: >
+    Annuncia l'inizio della raccolta rifiuti tramite Alexa, a un orario specificato,
+    controllando un calendario e leggendo il tipo di raccolta dal sensore.
+  domain: automation
+  input:
+    calendario_raccolta:
+      name: Calendario raccolta rifiuti
+      selector:
+        entity:
+          domain: calendar
+    dispositivo_alexa:
+      name: Dispositivo Alexa
+      selector:
+        entity:
+          domain: media_player
+    orario_annuncio:
+      name: Orario dell'annuncio
+      description: Seleziona l'orario in cui Alexa deve fare l'annuncio
+      default: "20:00:00"
+      selector:
+        time: {}
+
+trigger:
+  - platform: time
+    at: !input orario_annuncio
+
+condition:
+  - condition: template
+    value_template: >
+      {{ (state_attr('sensor.raccolta_rifiuti', 'collection_types') or []) | length > 0 }}
+
+action:
+  - variables:
+      messaggio: >-
+        {% set val = state_attr('sensor.raccolta_rifiuti', 'collection_types') %}
+        {% set raccolta = [val] if val is string else (val or []) %}
+        {% set tipi = raccolta | join(', ') if raccolta else 'nessun tipo di rifiuto definito' %}
+        Domani si raccoglie: {{ tipi }}.
+  - service: notify.alexa_media
+    data:
+      target:
+        - !input dispositivo_alexa
+      message: "{{ messaggio }}"
+      data:
+        type: announce
+        method: speak
+
+mode: single
