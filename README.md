@@ -126,7 +126,7 @@ Per usare i blueprint inclusi:
 
 3. Riavvia Home Assistant o ricarica le automazioni.
 
-👉 Dopo il riavvio, troverai i blueprint disponibili in:
+👉 Dopo il riavvio, troverai l'automazione disponibile in:
 **Impostazioni > Automazioni e Scenari > + Crea automazione**
 
 ---
