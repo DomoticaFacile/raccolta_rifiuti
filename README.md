@@ -122,7 +122,7 @@ Per usare i blueprint inclusi:
    `config/blueprints/automation/raccolta_rifiuti/`
 
 2. Copia i file YAML da questa cartella del repository:
-   [`blueprints/automation/raccolta_rifiuti/`](https://github.com/TUO_REPO/blueprints/automation/raccolta_rifiuti)
+   [`blueprints/automation/raccolta_rifiuti/`](https://github.com/DomoticaFacile/raccolta_rifiuti/tree/main/blueprints/automation/raccolta_rifiuti)
 
 3. Riavvia Home Assistant o ricarica le automazioni.
 
