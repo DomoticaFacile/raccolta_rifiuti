@@ -11,7 +11,7 @@ Integrazione personalizzata per visualizzare la Raccolta dei rifiuti nel tuo Hom
 
 ## 📦 Funzionalità
 
-✅ Crea il sensore `sensor.prossima_raccolta_rifiuti`  
+✅ Crea il sensore `sensor.raccolta_rifiuti`  
 ✅ Include attributo `collection_types` (es: `"Plastica", "Carta"`)  
 ✅ Compatibile con template e card HTML personalizzate  
 ✅ Supporta immagini per ogni tipo di rifiuto
