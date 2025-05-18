@@ -7,6 +7,7 @@ Integrazione personalizzata per visualizzare la Raccolta dei rifiuti nel tuo Hom
 
 ![image](https://github.com/user-attachments/assets/2647835f-7981-4974-98c8-f82dcfe85b48)
 
+Video Tutorial YouTube: https://www.youtube.com/watch?v=v-wM2uAQTRg
 ---
 
 ## 📦 Funzionalità
