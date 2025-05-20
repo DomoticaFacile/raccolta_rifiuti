@@ -23,6 +23,8 @@ Video Tutorial YouTube: https://www.youtube.com/watch?v=v-wM2uAQTRg
 
 > 💡 Se non hai HACS, segui [questa guida](https://hacs.xyz/docs/setup/download)
 
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Domotica+Facile&repository=https%3A%2F%2Fgithub.com%2FDomoticaFacile%2Fraccolta_rifiuti&category=Integration)
+
 1. Vai su **HACS > Integrazioni > Menu (⋮) > Repositories personalizzati**
 2. Inserisci l'URL del repository GitHub: https://github.com/DomoticaFacile/raccolta_rifiuti
 3. Tipo: `Integrazione`
