@@ -5,7 +5,7 @@
   "requirements": [],
   "codeowners": ["@DomoticaFacile"],
   "iot_class": "local_polling",
-  "integration_type": "integration",
+  "integration_type": "entity",
   "issue_tracker": "https://github.com/DomoticaFacile/raccolta_rifiuti/issues",
   "documentation": "https://github.com/DomoticaFacile/raccolta_rifiuti"
 }
