@@ -85,7 +85,7 @@ conditions:
 card:
   type: markdown
   content: >-
-    {% set raccolta = state_attr('sensor.prossima_raccolta_rifiuti', 'collection_types') %}
+    {% set raccolta = state_attr('sensor.raccolta_rifiuti', 'collection_types') %}
 
     Domani si raccoglie:
 
