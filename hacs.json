@@ -1,6 +1,7 @@
 {
   "name": "Raccolta Rifiuti",
   "content_in_root": false,
+  "domains": ["raccolta_rifiuti"],
   "country": "IT",
   "homeassistant": "2023.0.0",
   "render_readme": true
