@@ -47,4 +47,4 @@ ATTR_COLLECTION_TYPES = "collection_types"
 
 # Sensor States
 STATE_NO_EVENT = "Nessuna raccolta programmata"
-STATE_UNKNOWN_EVENT = "Raccolta Sconosciuta"
+STATE_UNKNOWN_EVENT = "Raccolta sconosciuta"
