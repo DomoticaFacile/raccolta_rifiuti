@@ -11,7 +11,7 @@ CONF_SENSOR_NAME = "sensor_name"
 CONF_LOOKAHEAD_DAYS = "lookahead_days"
 
 # Default values
-DEFAULT_SENSOR_NAME = "Prossima Raccolta Rifiuti"
+DEFAULT_SENSOR_NAME = "Raccolta Rifiuti"
 DEFAULT_LOOKAHEAD_DAYS = 7
 
 # Event type keywords and corresponding image files (case-insensitive)
