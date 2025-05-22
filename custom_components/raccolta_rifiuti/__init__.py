@@ -7,10 +7,14 @@ import homeassistant.helpers.config_validation as cv
 _LOGGER = logging.getLogger(__name__)
 DOMAIN = "raccolta_rifiuti"
 
-CONFIG_SCHEMA = vol.Schema({}, extra=vol.ALLOW_EXTRA)
+# Configurazione accettata, anche se vuota
+CONFIG_SCHEMA = vol.Schema({DOMAIN: dict}, extra=vol.ALLOW_EXTRA)
 
+# Aggiunta per compatibilità con integrazione classica (opzionale ma utile)
 def setup(hass, config):
     """Set up the raccolta_rifiuti component."""
+
+    # Percorso immagini da custom_components
     source_dir = os.path.join(os.path.dirname(__file__), "images", "img_raccolta_rifiuti")
     target_dir = os.path.join(hass.config.path("www"), "images", "img_raccolta_rifiuti")
 
@@ -30,4 +34,8 @@ def setup(hass, config):
             shutil.copy(source_file, target_file)
             _LOGGER.info(f"Copiato {file_name} in www/images/img_raccolta_rifiuti")
 
+    return True
+
+async def async_setup_entry(hass, config_entry):
+    """Setup tramite interfaccia utente (UI), opzionale"""
     return True
