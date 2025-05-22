@@ -7,7 +7,7 @@ import homeassistant.helpers.config_validation as cv
 _LOGGER = logging.getLogger(__name__)
 DOMAIN = "raccolta_rifiuti"
 
-CONFIG_SCHEMA = vol.Schema({DOMAIN: cv.empty_config_schema})
+CONFIG_SCHEMA = vol.Schema({}, extra=vol.ALLOW_EXTRA)
 
 def setup(hass, config):
     """Set up the raccolta_rifiuti component."""
