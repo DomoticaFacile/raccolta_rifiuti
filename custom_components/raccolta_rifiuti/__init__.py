@@ -7,10 +7,6 @@ import homeassistant.helpers.config_validation as cv
 _LOGGER = logging.getLogger(__name__)
 DOMAIN = "raccolta_rifiuti"
 
-# Configurazione accettata, anche se vuota
-CONFIG_SCHEMA = vol.Schema({DOMAIN: dict}, extra=vol.ALLOW_EXTRA)
-
-# Aggiunta per compatibilità con integrazione classica (opzionale ma utile)
 def setup(hass, config):
     """Set up the raccolta_rifiuti component."""
 
@@ -37,5 +33,4 @@ def setup(hass, config):
     return True
 
 async def async_setup_entry(hass, config_entry):
-    """Setup tramite interfaccia utente (UI), opzionale"""
     return True
