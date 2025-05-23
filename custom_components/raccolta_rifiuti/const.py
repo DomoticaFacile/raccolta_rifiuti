@@ -1,16 +1,13 @@
-"""Constants for the Raccolta Rifiuti integration."""
-
 # Creato da domoticafacile.it
 
 DOMAIN = "raccolta_rifiuti"
 PLATFORMS = ["sensor"]
 
-# Configuration keys
+
 CONF_CALENDAR = "calendar_entity_id"
 CONF_SENSOR_NAME = "sensor_name"
 CONF_LOOKAHEAD_DAYS = "lookahead_days"
 
-# Default values
 DEFAULT_SENSOR_NAME = "Raccolta Rifiuti"
 DEFAULT_LOOKAHEAD_DAYS = 7
 
