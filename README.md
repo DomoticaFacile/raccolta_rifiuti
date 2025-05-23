@@ -59,18 +59,6 @@ quando la card deve mostrare i contenitori (E' possibile inserire: Carta, Plasti
 
 La logica è: se ogni lunedi raccolgono carta e vetro, crea due eventi la domenica,
 uno carta e uno vetro, metti orario 19:00 - 23:59 e poi seleziona il lunedi di ogni settimana.
-
----
-
-🖼️ Immagini (manuale)
-
-Per visualizzare le icone nel tuo template, è necessario:
-
-    Copiare la cartella **images**:
-    da
-    config\custom_components\raccolta_rifiuti\
-    a
-    config\www\
 	
 ---
 
@@ -112,6 +100,22 @@ card:
     {% endif %}
 
     </div>
+
+```
+🖼️ Immagini (manuale)
+
+Dopo aver completato l'installazione, verifica che sia stata creata la seguente cartella, contenente le immagini:
+
+``` config\www\images\img_raccolta_rifiuti ```
+
+Se la cartella non è presente, puoi crearla manualmente seguendo questi semplici passaggi:
+
+```
+Copia la cartella images da:
+config\custom_components\raccolta_rifiuti\
+a:
+config\www\
+    
 ```
 Riavvia Home Assistant
 ---
