@@ -1,10 +1,7 @@
 import os
 import shutil
-import logging
-import voluptuous as vol
 import homeassistant.helpers.config_validation as cv
 
-_LOGGER = logging.getLogger(__name__)
 DOMAIN = "raccolta_rifiuti"
 
 def setup(hass, config):
