@@ -100,8 +100,8 @@ card:
     {% endif %}
 
     </div>
-
 ```
+---
 🖼️ Immagini (manuale)
 
 Dopo aver completato l'installazione, verifica che sia stata creata la seguente cartella, contenente le immagini:
