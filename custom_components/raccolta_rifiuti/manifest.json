@@ -1,10 +1,10 @@
 {
   "domain": "raccolta_rifiuti",
-  "documentation": "https://github.com/DomoticaFacile/raccolta_rifiuti",
   "name": "Raccolta Rifiuti",
-  "version": "1.0.3",
-  "requirements": [],
   "codeowners": ["@DomoticaFacile"],
+  "documentation": "https://github.com/DomoticaFacile/raccolta_rifiuti",
   "iot_class": "local_polling",
-  "issue_tracker": "https://github.com/DomoticaFacile/raccolta_rifiuti/issues"
+  "issue_tracker": "https://github.com/DomoticaFacile/raccolta_rifiuti/issues",
+  "requirements": [],
+  "version": "1.0.3"
 }
