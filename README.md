@@ -153,6 +153,7 @@ Apri una issue, una pull request o contattaci tramite i nostri canali social che
 ---
 
 💖 Ringraziamenti:
+
 Un enorme grazie a:
 
 👤 **Bilo2110** – per il prezioso supporto come tester 🧪  
