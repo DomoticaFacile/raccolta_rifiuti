@@ -3,7 +3,6 @@
 DOMAIN = "raccolta_rifiuti"
 PLATFORMS = ["sensor"]
 
-
 CONF_CALENDAR = "calendar_entity_id"
 CONF_SENSOR_NAME = "sensor_name"
 CONF_LOOKAHEAD_DAYS = "lookahead_days"
