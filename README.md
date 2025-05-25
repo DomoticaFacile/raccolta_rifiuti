@@ -152,6 +152,18 @@ Apri una issue, una pull request o contattaci tramite i nostri canali social che
 
 ---
 
+## 💖 Ringraziamenti:
+Un enorme grazie a:
+
+👤 **Bilo2110** – per il prezioso supporto come tester 🧪  
+
+...e a tutti coloro che supportano e contribuiscono a questo progetto!
+
+Ogni feedback, segnalazione o contributo è sempre benvenuto 😊  
+Insieme rendiamo la domotica più facile e divertente!
+
+---
+
 ## 📄 Licenza
 
 Questo progetto è distribuito sotto licenza **MIT**.  
