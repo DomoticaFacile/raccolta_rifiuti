@@ -1,6 +1,7 @@
 {
   "domain": "raccolta_rifiuti",
   "name": "Raccolta Rifiuti",
+  "platforms": ["sensor"],
   "codeowners": ["@DomoticaFacile"],
   "documentation": "https://github.com/DomoticaFacile/raccolta_rifiuti",
   "iot_class": "local_polling",
