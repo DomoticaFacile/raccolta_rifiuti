@@ -23,11 +23,9 @@ Video Tutorial YouTube: https://www.youtube.com/watch?v=v-wM2uAQTRg
 
 > 💡 Se non hai HACS, segui [questa guida](https://hacs.xyz/docs/setup/download)
 
-1. Vai su **HACS > Integrazioni > Menu (⋮) > Repositories personalizzati**
-2. Inserisci l'URL del repository GitHub: https://github.com/DomoticaFacile/raccolta_rifiuti
-3. Tipo: `Integrazione`
-4. Cerca "Raccolta Rifiuti" tra le integrazioni e clicca su "Installa"
-5. Riavvia Home Assistant
+1. Vai su **HACS**
+2. Cerca "Raccolta Rifiuti" tra le integrazioni e clicca su "Installa"
+3. Riavvia Home Assistant
 
 ---
 
