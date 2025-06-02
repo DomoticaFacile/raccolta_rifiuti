@@ -1,4 +1,4 @@
-# blueprint realizzato da domoticafacile.it per l'integrazione Raccolta Rifiuti.
+# Blueprint realizzato da domoticafacile.it per l'integrazione Raccolta Rifiuti.
 blueprint:
   name: Annuncio raccolta rifiuti con Alexa
   description: >
@@ -6,11 +6,11 @@ blueprint:
     usando Alexa.
   domain: automation
   input:
-    calendario_raccolta:
-      name: Calendario raccolta rifiuti
+    sensore_raccolta:
+      name: Sensore raccolta rifiuti
       selector:
         entity:
-          domain: calendar
+          domain: sensor
     dispositivo_alexa:
       name: Dispositivo Alexa (media_player)
       selector:
@@ -23,10 +23,9 @@ blueprint:
       default: "20:00:00"
     abilita_secondo_orario:
       name: Abilita secondo orario
-      description: Attiva questa opzione per impostare un secondo orario di annuncio
-      default: false
       selector:
         boolean: {}
+      default: false
     orario_annuncio_2:
       name: Secondo orario dell'annuncio
       selector:
@@ -34,18 +33,17 @@ blueprint:
       default: "20:30:00"
     abilita_controllo_presenza:
       name: Controllo presenza
-      description: Esegui solo se almeno uno dei telefoni è in casa (facoltativo)
-      default: false
       selector:
         boolean: {}
+      default: false
     dispositivo_presenza_1:
-      name: Primo telefono da controllare (facoltativo)
+      name: Primo telefono (facoltativo)
       selector:
         entity:
           domain: device_tracker
       default: ""
     dispositivo_presenza_2:
-      name: Secondo telefono da controllare (facoltativo)
+      name: Secondo telefono (facoltativo)
       selector:
         entity:
           domain: device_tracker
@@ -59,19 +57,16 @@ trigger:
     id: secondo_annuncio
 
 variables:
-  cal: !input calendario_raccolta
+  sensore: !input sensore_raccolta
   secondario_attivo: !input abilita_secondo_orario
   controllo_presenza_attivo: !input abilita_controllo_presenza
   tracker_1: !input dispositivo_presenza_1
   tracker_2: !input dispositivo_presenza_2
 
 condition:
-  - condition: state
-    entity_id: !input calendario_raccolta
-    state: "on"
   - condition: template
     value_template: >
-      {{ (state_attr(cal, 'message') or '') | trim != '' }}
+      {{ (state_attr(sensor.raccolta_rifiuti, 'collection_types') or []) | length > 0 }}
   - condition: or
     conditions:
       - condition: template
@@ -91,8 +86,9 @@ condition:
 
 action:
   - variables:
-      eventi: "{{ state_attr(cal, 'message') }}"
-      messaggio: "Domani verrà raccolto: {{ eventi }}."
+      raccolta: "{{ state_attr(sensore, 'collection_types') or [] }}"
+      tipi: "{{ raccolta | join(', ') if raccolta else 'nessun tipo di rifiuto definito' }}"
+      messaggio: "Domani verrà raccolto: {{ tipi }}."
   - service: notify.alexa_media
     data:
       target:
