@@ -1,4 +1,4 @@
-# blueprint realizzato da domoticafacile.it per l'integrazione Raccolta Rifiuti.
+# Blueprint realizzato da domoticafacile.it per l'integrazione Raccolta Rifiuti.
 blueprint:
   name: Annuncio raccolta rifiuti con Google Home
   description: >
@@ -6,11 +6,11 @@ blueprint:
     usando Google Home.
   domain: automation
   input:
-    calendario_raccolta:
-      name: Calendario raccolta rifiuti
+    sensore_raccolta:
+      name: Sensore raccolta rifiuti
       selector:
         entity:
-          domain: calendar
+          domain: sensor
     dispositivo_google:
       name: Dispositivo Google (media_player)
       selector:
@@ -23,10 +23,9 @@ blueprint:
       default: "20:00:00"
     abilita_secondo_orario:
       name: Abilita secondo orario
-      description: Attiva questa opzione per impostare un secondo orario di annuncio
-      default: false
       selector:
         boolean: {}
+      default: false
     orario_annuncio_2:
       name: Secondo orario dell'annuncio
       selector:
@@ -34,38 +33,35 @@ blueprint:
       default: "20:30:00"
     volume_pre_annuncio:
       name: Volume prima dell'annuncio
-      description: Imposta il volume (da 0.0 a 1.0)
-      default: 0.6
       selector:
         number:
           min: 0.0
           max: 1.0
           step: 0.05
           mode: slider
+      default: 0.6
     volume_post_annuncio:
       name: Volume dopo l'annuncio
-      description: Imposta il volume da ripristinare (da 0.0 a 1.0)
-      default: 0.3
       selector:
         number:
           min: 0.0
           max: 1.0
           step: 0.05
           mode: slider
+      default: 0.3
     abilita_controllo_presenza:
       name: Controllo presenza
-      description: Esegui solo se almeno uno dei due telefoni è in casa (se abilitato)
-      default: false
       selector:
         boolean: {}
+      default: false
     dispositivo_presenza_1:
-      name: Primo telefono da controllare (facoltativo)
+      name: Primo telefono (facoltativo)
       selector:
         entity:
           domain: device_tracker
       default: ""
     dispositivo_presenza_2:
-      name: Secondo telefono da controllare (facoltativo)
+      name: Secondo telefono (facoltativo)
       selector:
         entity:
           domain: device_tracker
@@ -79,19 +75,16 @@ trigger:
     id: secondo_annuncio
 
 variables:
-  cal: !input calendario_raccolta
+  sensore: !input sensore_raccolta
   secondario_attivo: !input abilita_secondo_orario
   controllo_presenza_attivo: !input abilita_controllo_presenza
   tracker_1: !input dispositivo_presenza_1
   tracker_2: !input dispositivo_presenza_2
 
 condition:
-  - condition: state
-    entity_id: !input calendario_raccolta
-    state: "on"
   - condition: template
     value_template: >
-      {{ (state_attr(cal, 'message') or '') | trim != '' }}
+      {{ (state_attr(sensor.raccolta_rifiuti, 'collection_types') or []) | length > 0 }}
   - condition: or
     conditions:
       - condition: template
@@ -111,7 +104,8 @@ condition:
 
 action:
   - variables:
-      eventi: "{{ state_attr(cal, 'message') }}"
+      raccolta: "{{ state_attr(sensore, 'collection_types') or [] }}"
+      tipi: "{{ raccolta | join(', ') if raccolta else 'nessun tipo di rifiuto definito' }}"
   - service: media_player.volume_set
     data:
       entity_id: !input dispositivo_google
@@ -119,7 +113,7 @@ action:
   - service: tts.google_translate_say
     data:
       entity_id: !input dispositivo_google
-      message: "Domani verrà raccolto: {{ eventi }}."
+      message: "Domani verrà raccolto: {{ tipi }}."
   - delay: 5
   - service: media_player.volume_set
     data:
