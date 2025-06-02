@@ -1,9 +1,15 @@
 # 🗑️ Raccolta Rifiuti per Home Assistant
 
+Integrazione personalizzata per visualizzare la Raccolta dei rifiuti nel tuo Home Assistant, con supporto ad icone grafiche e visualizzazione in Lovelace.
+
 ![HACS Custom](https://img.shields.io/badge/HACS-Custom-blue)
 ![Platform](https://img.shields.io/badge/Platform-Home%20Assistant-41BDF5)
+![Maintainer](https://img.shields.io/badge/Maintainer-DomoticaFacile-blueviolet)
+[![Donate](https://img.shields.io/badge/Buy_Me_A_Coffee-%E2%98%95-yellow)](https://www.buymeacoffee.com/domoticafacile)
+![Last Commit](https://img.shields.io/github/last-commit/DomoticaFacile/raccolta_rifiuti)
+![GitHub stars](https://img.shields.io/github/stars/DomoticaFacile/raccolta_rifiuti?style=social)
 
-Integrazione personalizzata per visualizzare la Raccolta dei rifiuti nel tuo Home Assistant, con supporto ad icone grafiche e visualizzazione in Lovelace.
+**Ti piace questa integrazione?** ⭐ Clicca sulla stella per supportare il progetto!
 
 ![image](https://github.com/user-attachments/assets/2647835f-7981-4974-98c8-f82dcfe85b48)
 
