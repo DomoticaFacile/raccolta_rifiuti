@@ -34,20 +34,22 @@ blueprint:
       default: "20:30:00"
     abilita_controllo_presenza:
       name: Controllo presenza
-      description: Esegui solo se uno dei dispositivi selezionati è in casa
+      description: Esegui solo se almeno uno dei telefoni è in casa (facoltativo)
       default: false
       selector:
         boolean: {}
     dispositivo_presenza_1:
-      name: Primo telefono da controllare (device_tracker)
+      name: Primo telefono da controllare (facoltativo)
       selector:
         entity:
           domain: device_tracker
+      default: ""
     dispositivo_presenza_2:
-      name: Secondo telefono da controllare (device_tracker)
+      name: Secondo telefono da controllare (facoltativo)
       selector:
         entity:
           domain: device_tracker
+      default: ""
 
 trigger:
   - platform: time
@@ -82,7 +84,10 @@ condition:
         value_template: "{{ not controllo_presenza_attivo }}"
       - condition: template
         value_template: >
-          {{ is_state(tracker_1, 'home') or is_state(tracker_2, 'home') }}
+          {{
+            (tracker_1 in states and is_state(tracker_1, 'home')) or
+            (tracker_2 in states and is_state(tracker_2, 'home'))
+          }}
 
 action:
   - variables:
