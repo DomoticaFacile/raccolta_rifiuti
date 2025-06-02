@@ -1,0 +1,100 @@
+# blueprint realizzato da domoticafacile.it per l'integrazione Raccolta Rifiuti.
+blueprint:
+  name: Annuncio raccolta rifiuti con Alexa
+  description: >
+    Annuncia cosa verrà raccolto domani, ogni sera a uno o due orari specificati,
+    usando Alexa.
+  domain: automation
+  input:
+    calendario_raccolta:
+      name: Calendario raccolta rifiuti
+      selector:
+        entity:
+          domain: calendar
+    dispositivo_alexa:
+      name: Dispositivo Alexa (media_player)
+      selector:
+        entity:
+          domain: media_player
+    orario_annuncio_1:
+      name: Primo orario dell'annuncio
+      selector:
+        time: {}
+      default: "20:00:00"
+    abilita_secondo_orario:
+      name: Abilita secondo orario
+      description: Attiva questa opzione per impostare un secondo orario di annuncio
+      default: false
+      selector:
+        boolean: {}
+    orario_annuncio_2:
+      name: Secondo orario dell'annuncio
+      selector:
+        time: {}
+      default: "20:30:00"
+    abilita_controllo_presenza:
+      name: Controllo presenza
+      description: Esegui solo se uno dei dispositivi selezionati è in casa
+      default: false
+      selector:
+        boolean: {}
+    dispositivo_presenza_1:
+      name: Primo telefono da controllare (device_tracker)
+      selector:
+        entity:
+          domain: device_tracker
+    dispositivo_presenza_2:
+      name: Secondo telefono da controllare (device_tracker)
+      selector:
+        entity:
+          domain: device_tracker
+
+trigger:
+  - platform: time
+    at: !input orario_annuncio_1
+  - platform: time
+    at: !input orario_annuncio_2
+    id: secondo_annuncio
+
+variables:
+  cal: !input calendario_raccolta
+  secondario_attivo: !input abilita_secondo_orario
+  controllo_presenza_attivo: !input abilita_controllo_presenza
+  tracker_1: !input dispositivo_presenza_1
+  tracker_2: !input dispositivo_presenza_2
+
+condition:
+  - condition: state
+    entity_id: !input calendario_raccolta
+    state: "on"
+  - condition: template
+    value_template: >
+      {{ (state_attr(cal, 'message') or '') | trim != '' }}
+  - condition: or
+    conditions:
+      - condition: template
+        value_template: "{{ trigger.id != 'secondo_annuncio' }}"
+      - condition: template
+        value_template: "{{ trigger.id == 'secondo_annuncio' and secondario_attivo }}"
+  - condition: or
+    conditions:
+      - condition: template
+        value_template: "{{ not controllo_presenza_attivo }}"
+      - condition: template
+        value_template: >
+          {{ is_state(tracker_1, 'home') or is_state(tracker_2, 'home') }}
+
+action:
+  - variables:
+      eventi: "{{ state_attr(cal, 'message') }}"
+      messaggio: "Domani verrà raccolto: {{ eventi }}."
+  - service: notify.alexa_media
+    data:
+      target:
+        - !input dispositivo_alexa
+      message: "{{ messaggio }}"
+      data:
+        type: announce
+        method: speak
+
+mode: single
