@@ -155,6 +155,7 @@ Apri una issue, una pull request o contattaci tramite i nostri canali social che
 Un enorme grazie a:
 
 👤 **Bilo2110** – per il prezioso supporto come tester 🧪  
+👤 **DaniloGP-91** – per i preziosi suggerimenti nella creazione del blueprint che permette a Google Home di annunciare la raccolta rifiuti 🔊
 
 ...e a tutti coloro che supportano e contribuiscono a questo progetto!
 
