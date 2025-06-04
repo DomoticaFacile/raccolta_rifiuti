@@ -9,6 +9,15 @@ Integrazione personalizzata per visualizzare la Raccolta dei rifiuti nel tuo Hom
 ![Last Commit](https://img.shields.io/github/last-commit/DomoticaFacile/raccolta_rifiuti)
 ![GitHub stars](https://img.shields.io/github/stars/DomoticaFacile/raccolta_rifiuti?style=social)
 
+
+[![Gruppo Facebook](https://img.shields.io/badge/Gruppo-Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white)](https://www.facebook.com/groups/domoticafacile)
+[![Pagina Facebook](https://img.shields.io/badge/Pagina-Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white)](https://www.facebook.com/domoticafacile)
+[![YouTube](https://img.shields.io/badge/YouTube-Channel-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@DomoticaFacile-it)
+
+[![Instagram](https://img.shields.io/badge/Instagram-Profilo-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/domoticafacile.it)
+[![TikTok](https://img.shields.io/badge/TikTok-Profilo-000000?style=for-the-badge&logo=tiktok&logoColor=white)](https://www.tiktok.com/@domoticafacile6)
+[![WhatsApp](https://img.shields.io/badge/WhatsApp-Canale-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://whatsapp.com/channel/0029Vb5qW5O4o7qPGrFbRm1T)
+
 **Ti piace questa integrazione?** ⭐ Clicca sulla stella per supportare il progetto!
 
 ![image](https://github.com/user-attachments/assets/2647835f-7981-4974-98c8-f82dcfe85b48)
