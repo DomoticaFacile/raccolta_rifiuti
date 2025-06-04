@@ -1,4 +1,5 @@
 # Blueprint realizzato da domoticafacile.it per l'integrazione Raccolta Rifiuti.
+# Blueprint realizzato da domoticafacile.it per l'integrazione Raccolta Rifiuti.
 blueprint:
   name: Annuncio raccolta rifiuti con Alexa
   description: >
@@ -66,7 +67,7 @@ variables:
 condition:
   - condition: template
     value_template: >
-      {{ (state_attr(sensor.raccolta_rifiuti, 'collection_types') or []) | length > 0 }}
+      {{ (state_attr(sensore, 'collection_types') or []) | length > 0 }}
   - condition: or
     conditions:
       - condition: template
