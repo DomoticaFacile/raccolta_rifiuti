@@ -1,5 +1,4 @@
 # Blueprint realizzato da domoticafacile.it per l'integrazione Raccolta Rifiuti.
-# Blueprint realizzato da domoticafacile.it per l'integrazione Raccolta Rifiuti.
 blueprint:
   name: Annuncio raccolta rifiuti con Alexa
   description: >
