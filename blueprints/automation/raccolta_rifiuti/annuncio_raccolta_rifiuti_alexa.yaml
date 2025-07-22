@@ -3,7 +3,7 @@ blueprint:
   name: Annuncio raccolta rifiuti con Alexa
   description: >
     Annuncia cosa verrà raccolto domani, ogni sera a uno o due orari specificati,
-    usando Alexa.
+    usando Alexa con l'integrazione alexa_media_player.
   domain: automation
   input:
     sensore_raccolta:
@@ -31,27 +31,11 @@ blueprint:
       selector:
         time: {}
       default: "20:30:00"
-    abilita_controllo_presenza:
-      name: Controllo presenza
-      selector:
-        boolean: {}
-      default: false
-    dispositivo_presenza_1:
-      name: Primo telefono (facoltativo)
-      selector:
-        entity:
-          domain: device_tracker
-      default: ""
-    dispositivo_presenza_2:
-      name: Secondo telefono (facoltativo)
-      selector:
-        entity:
-          domain: device_tracker
-      default: ""
 
 trigger:
   - platform: time
     at: !input orario_annuncio_1
+    id: primo_annuncio
   - platform: time
     at: !input orario_annuncio_2
     id: secondo_annuncio
@@ -59,36 +43,36 @@ trigger:
 variables:
   sensore: !input sensore_raccolta
   secondario_attivo: !input abilita_secondo_orario
-  controllo_presenza_attivo: !input abilita_controllo_presenza
-  tracker_1: !input dispositivo_presenza_1
-  tracker_2: !input dispositivo_presenza_2
 
 condition:
   - condition: template
     value_template: >
       {{ (state_attr(sensore, 'collection_types') or []) | length > 0 }}
+
   - condition: or
     conditions:
       - condition: template
-        value_template: "{{ trigger.id != 'secondo_annuncio' }}"
-      - condition: template
-        value_template: "{{ trigger.id == 'secondo_annuncio' and secondario_attivo }}"
-  - condition: or
-    conditions:
-      - condition: template
-        value_template: "{{ not controllo_presenza_attivo }}"
-      - condition: template
-        value_template: >
-          {{
-            (tracker_1 in states and is_state(tracker_1, 'home')) or
-            (tracker_2 in states and is_state(tracker_2, 'home'))
-          }}
+        value_template: "{{ trigger.id == 'primo_annuncio' }}"
+      - condition: and
+        conditions:
+          - condition: template
+            value_template: "{{ trigger.id == 'secondo_annuncio' }}"
+          - condition: template
+            value_template: "{{ secondario_attivo }}"
 
 action:
   - variables:
       raccolta: "{{ state_attr(sensore, 'collection_types') or [] }}"
-      tipi: "{{ raccolta | join(', ') if raccolta else 'nessun tipo di rifiuto definito' }}"
-      messaggio: "Domani verrà raccolto: {{ tipi }}."
+      tipi: >
+        {% if raccolta | length > 1 %}
+          {{ raccolta[:-1] | join(', ') }} e {{ raccolta[-1] }}
+        {% elif raccolta | length == 1 %}
+          {{ raccolta[0] }}
+        {% else %}
+          nessun tipo di rifiuto definito
+        {% endif %}
+      messaggio: "Domani verrà raccolta: {{ tipi }}."
+
   - service: notify.alexa_media
     data:
       target:
