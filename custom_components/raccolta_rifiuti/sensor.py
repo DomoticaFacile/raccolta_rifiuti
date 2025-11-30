@@ -298,6 +298,8 @@ class RaccoltaRifiutiSensor(SensorEntity):
                         type_name = "Plastica"
                     elif keyword == "vetro":
                         type_name = "Vetro"
+                    elif keyword == "verde":
+                        type_name = "Verde"
                     else:
                         type_name = keyword.capitalize()
 
@@ -347,4 +349,5 @@ class RaccoltaRifiutiSensor(SensorEntity):
                 pic=self._entity_picture_path
             )
         )
+
         _LOGGER.debug("Full attributes: %s", self._attributes)
