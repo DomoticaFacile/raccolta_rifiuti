@@ -6,7 +6,6 @@ Integrazione personalizzata per visualizzare la Raccolta dei rifiuti nel tuo Hom
 ![Platform](https://img.shields.io/badge/Platform-Home%20Assistant-41BDF5)
 ![Maintainer](https://img.shields.io/badge/Maintainer-DomoticaFacile-blueviolet)
 [![Donate](https://img.shields.io/badge/Buy_Me_A_Coffee-%E2%98%95-yellow)](https://www.buymeacoffee.com/domoticafacile)
-![Last Commit](https://img.shields.io/github/last-commit/DomoticaFacile/raccolta_rifiuti)
 ![GitHub stars](https://img.shields.io/github/stars/DomoticaFacile/raccolta_rifiuti?style=social)
 
 
@@ -206,7 +205,6 @@ Custom integration to display your waste collection schedule in Home Assistant, 
 ![Platform](https://img.shields.io/badge/Platform-Home%20Assistant-41BDF5)
 ![Maintainer](https://img.shields.io/badge/Maintainer-DomoticaFacile-blueviolet)
 [![Donate](https://img.shields.io/badge/Buy_Me_A_Coffee-%E2%98%95-yellow)](https://www.buymeacoffee.com/domoticafacile)
-![Last Commit](https://img.shields.io/github/last-commit/DomoticaFacile/raccolta_rifiuti)
 ![GitHub stars](https://img.shields.io/github/stars/DomoticaFacile/raccolta_rifiuti?style=social)
 
 [![Facebook Group](https://img.shields.io/badge/Group-Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white)](https://www.facebook.com/groups/domoticafacile)
