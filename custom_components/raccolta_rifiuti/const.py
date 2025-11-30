@@ -23,6 +23,7 @@ EVENT_TYPE_KEYWORDS = {
     "cartone": "carta.png",
     "vetro": "vetro.png",
     "metallo": "metallo.png",
+    "verde": "verde.png",
     "Raccolta Sconosciuta": "vetro.png",
     # Aggiungi qui altre keyword se necessario (es. "matallo", "latta")
     # "metallo": "metallo.png",
