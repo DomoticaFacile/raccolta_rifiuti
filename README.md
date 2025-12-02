@@ -412,6 +412,60 @@ Settings > Automations & Scenes > + Create Automation
 
 ---
 
+📘 ALEXA VOICE ANNOUNCEMENT CONFIGURATION GUIDE
+
+1️⃣ Create the Helper (Toggle)
+
+Go to: Settings → Devices & Services → Helpers → Create Helper → Toggle
+
+Name the toggle "Avvia Annuncio Raccolta" (this will create input_boolean.avvia_annuncio_raccolta)
+
+Select the "Trash" icon
+
+2️⃣ Expose the Helper to Alexa
+
+Go to:
+
+Settings → Voice Assistants → Expose
+
+Search for "Avvia Annuncio Raccolta"
+
+Make sure the toggle you created is exposed to Alexa
+
+<img width="1155" height="438" alt="image" src="https://github.com/user-attachments/assets/794a6f01-05b9-47d8-8cb9-1be08b78dfaf" />
+3️⃣ Create the Routine in Alexa
+
+Open the Amazon Alexa app on your smartphone
+→ Routines → +
+
+Trigger → Voice Command
+→ "Quali rifiuti devo mettere fuori"
+(feel free to add any other trigger you prefer)
+
+Add Action → Smart Home
+→ Activate “Avvia Annuncio Raccolta”
+
+Save the routine.
+
+4️⃣ Create a New Automation Using the Blueprint
+"Avvia Annuncio raccolta tramite Alexa"
+<img width="1025" height="389" alt="image" src="https://github.com/user-attachments/assets/0ab3005a-73f7-4308-8020-fd371b091282" />
+🎉 RESULT
+
+How it works:
+
+You: “Alexa, quali rifiuti devo mettere fuori?”
+
+Alexa turns on the helper toggle
+
+The blueprint triggers your main automation
+
+The announcement is played through your preferred Alexa device
+
+The toggle automatically turns itself off
+
+---
+
 👨‍💻 Developer
 
 Created with ❤️ by www.domoticafacile.it
