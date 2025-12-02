@@ -1,0 +1,49 @@
+# Blueprint realizzato da domoticafacile.it per l'integrazione Raccolta Rifiuti.
+blueprint:
+  name: Avvia Annuncio raccolta tramite Alexa
+  domain: automation
+  input:
+    toggle_entity:
+      name: Interruttore virtuale da Alexa
+      description: L'input_boolean che Alexa accende.
+      selector:
+        entity:
+          domain: input_boolean
+
+    target_automation:
+      name: Automazione da avviare
+      description: Scegli l'automazione che vuoi far partire tramite Alexa.
+      selector:
+        entity:
+          domain: automation
+
+    auto_off_delay:
+      name: Ritardo spegnimento toggle
+      description: Tempo di attesa prima di spegnere il toggle dopo l’esecuzione.
+      selector:
+        number:
+          min: 1
+          max: 10
+          unit_of_measurement: second
+      default: 2
+
+trigger:
+  - platform: state
+    entity_id: !input toggle_entity
+    to: "on"
+
+action:
+  - service: automation.trigger
+    target:
+      entity_id: !input target_automation
+    data:
+      skip_condition: true
+
+  - delay:
+      seconds: !input auto_off_delay
+
+  - service: input_boolean.turn_off
+    target:
+      entity_id: !input toggle_entity
+
+mode: single
