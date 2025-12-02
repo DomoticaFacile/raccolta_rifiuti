@@ -155,6 +155,58 @@ Per usare i blueprint inclusi:
 
 ---
 
+📘 GUIDA DI CONFIGURAZIONE ANNUNCIO VOCALE ALEXA
+
+
+
+1️⃣ Creare l’helper (commutatore)
+
+- Vai su: Impostazioni → Dispositivi e servizi → Aiutanti → Crea Aiutante → Commutatore
+- Dai al commutatore il seguente nome "Avvia Annuncio Raccolta" (otterrai input_boolean.avvia_annuncio_raccolta)
+- Seleziona l'icona "Trash"
+
+2️⃣ Esporre l’helper ad Alexa
+
+Vai su:
+
+- Impostazioni → Assistenti vocali → Esponi
+- Cerca "Avvio Annuncio Raccolta"
+- Assicurati che il commutatore creato sia esposto ad Alexa
+
+<img width="1155" height="438" alt="image" src="https://github.com/user-attachments/assets/794a6f01-05b9-47d8-8cb9-1be08b78dfaf" />
+
+3️⃣ Crea la routine in Alexa
+
+Apri l'app Amazon Alexa sul tuo smartphone
+→ Routine → +
+
+Trigger → Comando vocale
+→ "Quali rifiuti devo mettere fuori"
+(metti altri trigger a tuo piacimento)
+
+Aggiungi Azione → Casa Intelligente
+→ Attiva Avvia Annuncio Raccolta
+
+Salva.
+
+4️⃣ Creare una nuova automazione usando il blueprint "Avvia Annuncio raccolta tramite Alexa"
+
+<img width="1025" height="389" alt="image" src="https://github.com/user-attachments/assets/0ab3005a-73f7-4308-8020-fd371b091282" />
+
+
+🎉 RISULTATO
+
+Come funziona:
+
+Tu: “Alexa, quali rifiuti devo mettere fuori?”
+
+- Alexa accende il commutatore
+- Il blueprint avvia la tua automazione originale
+- L’annuncio parte con la tua voce/echo preferito
+- Il toggle si spegne automaticamente
+  
+---
+
 👨‍💻 Sviluppatore
 
 Realizzato con ❤️ da www.domoticafacile.it
