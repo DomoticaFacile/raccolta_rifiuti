@@ -61,6 +61,7 @@ KEYWORDS_BY_LANGUAGE = {
         "verde": TYPE_GREEN,
         "sfalci": TYPE_GREEN,
         "potature": TYPE_GREEN,
+        "vegetale": TYPE_GREEN,
     },
     "en": {
         "paper": TYPE_PAPER,
