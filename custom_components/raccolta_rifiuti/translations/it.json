@@ -1,0 +1,91 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Raccolta Rifiuti",
+        "description": "Scegli il calendario in cui hai inserito le raccolte (di solito `calendar.raccolta_rifiuti`). Le notifiche Telegram si attivano dopo, da Configura.",
+        "data": {
+          "calendar_entity_id": "Calendario",
+          "name": "Nome del sensore (facoltativo)",
+          "lookahead_days": "Giorni in cui cercare la prossima raccolta",
+          "language": "Lingua del sensore"
+        },
+        "data_description": {
+          "name": "Lascia vuoto per usare il nome automatico.",
+          "lookahead_days": "Se oggi non c'è nulla, il sensore cerca la prossima raccolta entro questi giorni.",
+          "language": "Lingua dei nomi dei rifiuti mostrati dal sensore. Automatica segue la lingua di Home Assistant."
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "Per questo calendario esiste già un sensore."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Raccolta Rifiuti",
+        "menu_options": {
+          "general": "Impostazioni generali",
+          "telegram": "Notifiche Telegram"
+        }
+      },
+      "general": {
+        "title": "Impostazioni generali",
+        "data": {
+          "name": "Nome del sensore (facoltativo)",
+          "lookahead_days": "Giorni in cui cercare la prossima raccolta",
+          "language": "Lingua del sensore"
+        },
+        "data_description": {
+          "name": "Lascia vuoto per usare il nome automatico.",
+          "lookahead_days": "Se oggi non c'è nulla, il sensore cerca la prossima raccolta entro questi giorni.",
+          "language": "Lingua dei nomi dei rifiuti mostrati dal sensore. Automatica segue la lingua di Home Assistant."
+        }
+      },
+      "telegram": {
+        "title": "Notifiche Telegram",
+        "description": "Ogni sera ricevi su Telegram i rifiuti da mettere fuori. Il messaggio parte solo se c'è una raccolta in programma. Serve l'integrazione Telegram bot di Home Assistant con almeno una chat autorizzata.",
+        "data": {
+          "telegram_enabled": "Attiva le notifiche Telegram",
+          "telegram_targets": "Destinatari",
+          "notify_time": "Orario della notifica",
+          "notify_second_enabled": "Invia anche una seconda notifica",
+          "notify_second_time": "Orario della seconda notifica",
+          "notify_language": "Lingua del messaggio",
+          "notify_emoji": "Usa le emoji",
+          "notify_title": "Titolo del messaggio (facoltativo)"
+        },
+        "data_description": {
+          "telegram_targets": "Le chat Telegram a cui inviare il messaggio.",
+          "notify_second_time": "Usata solo se la seconda notifica è attiva.",
+          "notify_language": "Automatica segue la lingua di Home Assistant.",
+          "notify_title": "Lascia vuoto per il titolo automatico. Se il tuo bot usa Markdown, evita i caratteri . ! - ( ) nel titolo."
+        }
+      }
+    },
+    "error": {
+      "no_targets": "Seleziona almeno un destinatario.",
+      "invalid_target": "Seleziona solo chat dell'integrazione Telegram bot.",
+      "same_time": "La seconda notifica deve avere un orario diverso dalla prima."
+    },
+    "abort": {
+      "telegram_not_available": "Nessuna chat Telegram trovata. Configura prima l'integrazione Telegram bot di Home Assistant e aggiungi una chat tra quelle autorizzate."
+    }
+  },
+  "selector": {
+    "language": {
+      "options": {
+        "auto": "Automatica (come Home Assistant)",
+        "it": "Italiano",
+        "en": "English"
+      }
+    }
+  },
+  "issues": {
+    "deprecated_yaml": {
+      "title": "La configurazione YAML di Raccolta Rifiuti è obsoleta",
+      "description": "Il sensore è stato importato automaticamente e ora si gestisce da Impostazioni > Dispositivi e servizi > Raccolta Rifiuti, dove puoi anche attivare le notifiche Telegram. Rimuovi la voce `platform: raccolta_rifiuti` da configuration.yaml e riavvia Home Assistant."
+    }
+  }
+}

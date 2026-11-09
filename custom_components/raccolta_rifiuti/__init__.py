@@ -3,11 +3,16 @@ import os
 import shutil
 import logging
 
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.typing import ConfigType
 
+from .const import PLATFORMS
+from .notifier import RaccoltaRifiutiNotifier
+
 _LOGGER = logging.getLogger(__name__)
-DOMAIN = "raccolta_rifiuti"
+
+type RaccoltaRifiutiConfigEntry = ConfigEntry[RaccoltaRifiutiNotifier]
 
 
 def _copy_images(hass: HomeAssistant) -> None:
@@ -50,5 +55,27 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     return True
 
 
-async def async_setup_entry(hass: HomeAssistant, config_entry) -> bool:
+async def async_setup_entry(hass: HomeAssistant, entry: RaccoltaRifiutiConfigEntry) -> bool:
+    """Set up a Raccolta Rifiuti config entry: the sensor and the notifications."""
+    notifier = RaccoltaRifiutiNotifier(hass, entry)
+    entry.runtime_data = notifier
+
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+    notifier.async_start()
+
+    # Any change made in the options (Telegram on/off, times, ...) reloads
+    # the entry, so it takes effect immediately.
+    entry.async_on_unload(entry.add_update_listener(_async_options_updated))
     return True
+
+
+async def async_unload_entry(hass: HomeAssistant, entry: RaccoltaRifiutiConfigEntry) -> bool:
+    """Unload a config entry."""
+    if unload_ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
+        entry.runtime_data.async_stop()
+    return unload_ok
+
+
+async def _async_options_updated(hass: HomeAssistant, entry: RaccoltaRifiutiConfigEntry) -> None:
+    """Reload the entry when its options change."""
+    await hass.config_entries.async_reload(entry.entry_id)

@@ -8,10 +8,14 @@ from datetime import timedelta, date, datetime
 
 import voluptuous as vol
 from homeassistant.components.calendar import DOMAIN as CALENDAR_DOMAIN
-from homeassistant.const import CONF_NAME, EVENT_HOMEASSISTANT_START
+from homeassistant.config_entries import SOURCE_IMPORT, ConfigEntry
+from homeassistant.const import CONF_NAME, STATE_UNAVAILABLE
 from homeassistant.components.sensor import PLATFORM_SCHEMA, SensorEntity
-from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.core import Event, EventStateChangedData, HomeAssistant, callback
+from homeassistant.helpers import issue_registry as ir
+from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
+from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback, AddEntitiesCallback
+from homeassistant.helpers.event import async_track_state_change_event
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
 import homeassistant.helpers.config_validation as cv
 from homeassistant.util import dt as dt_util
@@ -25,6 +29,7 @@ from .const import (
     DEFAULT_LOOKAHEAD_DAYS,
     DEFAULT_LANGUAGE_OPTION,
     IMAGE_BASE_PATH,
+    sensor_unique_id,
     ATTR_EVENT_SUMMARY,
     ATTR_EVENT_START_TIME,
     ATTR_DAYS_REMAINING,
@@ -52,7 +57,7 @@ _LOGGER = logging.getLogger(__name__)
 # Polling every few seconds (the historical default) needlessly calls
 # calendar.get_events very often; 30 minutes keeps the sensor responsive
 # after a restart or a new calendar entry without hammering the calendar
-# integration. Still overridable per-entry with `scan_interval:` in YAML.
+# integration.
 SCAN_INTERVAL = timedelta(minutes=30)
 
 # Built once at import time: merges keywords from every supported source
@@ -84,42 +89,52 @@ async def async_setup_platform(
     async_add_entities: AddEntitiesCallback,
     discovery_info: DiscoveryInfoType | None = None,
 ) -> None:
-    """Set up the Raccolta Rifiuti sensor platform."""
+    """Import a sensor defined in configuration.yaml into a config entry.
+
+    YAML configuration is deprecated: the sensor is now configured from
+    Settings > Devices & services. Existing YAML sensors are imported
+    automatically (the entity keeps its entity_id and history), and can then
+    be removed from configuration.yaml. No entity is created here, to avoid
+    duplicates with the imported config entry.
+    """
+    ir.async_create_issue(
+        hass,
+        DOMAIN,
+        "deprecated_yaml",
+        is_fixable=False,
+        severity=ir.IssueSeverity.WARNING,
+        translation_key="deprecated_yaml",
+    )
+    hass.async_create_task(
+        hass.config_entries.flow.async_init(
+            DOMAIN, context={"source": SOURCE_IMPORT}, data=dict(config)
+        )
+    )
+
+
+async def async_setup_entry(
+    hass: HomeAssistant,
+    entry: ConfigEntry,
+    async_add_entities: AddConfigEntryEntitiesCallback,
+) -> None:
+    """Set up the sensor from a config entry."""
+    config = {**entry.data, **entry.options}
     calendar_entity_id = config[CONF_CALENDAR]
-    sensor_name = config.get(CONF_NAME)  # None => use localized default name
-    lookahead_days = config[CONF_LOOKAHEAD_DAYS]
-    language = config[CONF_LANGUAGE]
 
     _LOGGER.debug("Setting up Raccolta Rifiuti sensor for calendar: %s", calendar_entity_id)
-
-    async def _async_finalize_setup(_event=None) -> None:
-        """Finalize setup after calendar entity might be ready."""
-        _LOGGER.debug("Attempting to finalize Raccolta Rifiuti sensor setup.")
-        if hass.states.get(calendar_entity_id) is None:
-            _LOGGER.error(
-                "Calendar entity %s STILL not found after Home Assistant start. "
-                "Please check your configuration and calendar integration.",
+    async_add_entities(
+        [
+            RaccoltaRifiutiSensor(
+                hass,
+                config.get(CONF_NAME) or None,  # None => localized default name
                 calendar_entity_id,
+                int(config.get(CONF_LOOKAHEAD_DAYS, DEFAULT_LOOKAHEAD_DAYS)),
+                config.get(CONF_LANGUAGE, DEFAULT_LANGUAGE_OPTION),
+                entry,
             )
-            return
-
-        _LOGGER.info("Calendar entity %s found. Adding Raccolta Rifiuti sensor.", calendar_entity_id)
-        sensor = RaccoltaRifiutiSensor(hass, sensor_name, calendar_entity_id, lookahead_days, language)
-        async_add_entities([sensor], True)
-
-    if hass.states.get(calendar_entity_id) is not None:
-        _LOGGER.debug("Calendar entity %s found immediately.", calendar_entity_id)
-        await _async_finalize_setup()
-    else:
-        # Normale durante l'avvio: la piattaforma sensor viene spesso
-        # inizializzata prima che l'entità calendario sia pronta. Non è un
-        # errore: viene ritentato automaticamente a EVENT_HOMEASSISTANT_START.
-        _LOGGER.info(
-            "Calendar entity %s not found immediately (normale in fase di avvio). "
-            "Will attempt setup again after Home Assistant starts.",
-            calendar_entity_id,
-        )
-        hass.bus.async_listen_once(EVENT_HOMEASSISTANT_START, _async_finalize_setup)
+        ],
+        True,
+    )
 
 
 class RaccoltaRifiutiSensor(SensorEntity):
@@ -132,6 +147,7 @@ class RaccoltaRifiutiSensor(SensorEntity):
         calendar_entity_id: str,
         lookahead_days: int,
         language: str,
+        entry: ConfigEntry,
     ):
         """Initialize the sensor."""
         self.hass = hass
@@ -140,12 +156,41 @@ class RaccoltaRifiutiSensor(SensorEntity):
         self._lookahead_days = lookahead_days
         self._configured_language = language  # "auto", "it" or "en"
 
-        self._attr_unique_id = f"{DOMAIN}_{calendar_entity_id}_next_collection"
+        # Same unique id as the YAML-based versions: an existing sensor keeps
+        # its entity_id and history when it is migrated to a config entry.
+        self._attr_unique_id = sensor_unique_id(calendar_entity_id)
         self._attr_icon = "mdi:trash-can-outline"
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, entry.entry_id)},
+            name=entry.title,
+            entry_type=DeviceEntryType.SERVICE,
+            manufacturer="DomoticaFacile",
+        )
 
         self._state = self._strings()["no_event"]
         self._attributes = self._default_attributes()
         self._entity_picture_path = f"{IMAGE_BASE_PATH}{DEFAULT_IMAGE}"
+
+    async def async_added_to_hass(self) -> None:
+        """Refresh as soon as the calendar becomes available.
+
+        At boot the calendar entity is often created after this sensor. Instead
+        of waiting for the next 30-minute poll, update right when the calendar
+        appears (or comes back from unavailable).
+        """
+
+        @callback
+        def _calendar_changed(event: Event[EventStateChangedData]) -> None:
+            old_state = event.data["old_state"]
+            new_state = event.data["new_state"]
+            if new_state is None or new_state.state == STATE_UNAVAILABLE:
+                return
+            if old_state is None or old_state.state == STATE_UNAVAILABLE:
+                self.async_schedule_update_ha_state(True)
+
+        self.async_on_remove(
+            async_track_state_change_event(self.hass, [self._calendar_entity_id], _calendar_changed)
+        )
 
     def _language(self) -> str:
         """Return the display language actually in effect.

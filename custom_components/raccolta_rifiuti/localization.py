@@ -113,14 +113,31 @@ STRINGS = {
         "no_event": "Nessuna raccolta programmata",
         "calendar_not_found": "Calendario non trovato",
         "service_error": "Errore servizio calendario",
+        "notify_title": "🗑️ Raccolta rifiuti",
+        "notify_intro": "Domani verrà raccolto:",
     },
     "en": {
         "default_name": "Waste Collection",
         "no_event": "No collection scheduled",
         "calendar_not_found": "Calendar not found",
         "service_error": "Calendar service error",
+        "notify_title": "🗑️ Waste collection",
+        "notify_intro": "Tomorrow's collection:",
     },
 }
+
+# One emoji per canonical type, used in the Telegram notification.
+TYPE_EMOJIS = {
+    TYPE_PAPER: "📄",
+    TYPE_PLASTIC: "🧴",
+    TYPE_GLASS: "🍾",
+    TYPE_ORGANIC: "🍎",
+    TYPE_RESIDUAL: "🗑️",
+    TYPE_METAL: "🥫",
+    TYPE_GREEN: "🌿",
+    TYPE_UNKNOWN: "❓",
+}
+BULLET = "•"
 
 DEFAULT_LANGUAGE = "en"
 SUPPORTED_LANGUAGES = ("it", "en")
@@ -151,3 +168,29 @@ def build_keyword_index():
     for lang_keywords in KEYWORDS_BY_LANGUAGE.values():
         merged.update(lang_keywords)
     return merged
+
+
+def build_notification(codes, language, use_emoji=True, custom_title=None):
+    """Build the (title, message) of the evening notification.
+
+    `codes` are the language-independent type codes exposed by the sensor in
+    `collection_type_codes` (e.g. ["paper", "glass"]). Names are looked up in
+    `language`, so the whole message is in one language whatever language the
+    sensor itself displays.
+
+    The text deliberately avoids characters that are special in Telegram's
+    MarkdownV2 (. ! - ( ) ...), so it is delivered correctly whichever parse
+    mode is configured on the Telegram bot.
+    """
+    language = language if language in LABELS else DEFAULT_LANGUAGE
+    labels = LABELS[language]
+    strings = STRINGS[language]
+
+    lines = []
+    for code in codes:
+        symbol = TYPE_EMOJIS.get(code, "▫️") if use_emoji else BULLET
+        lines.append(f"{symbol} {labels.get(code, str(code).capitalize())}")
+
+    title = (custom_title or "").strip() or strings["notify_title"]
+    message = strings["notify_intro"] + "\n" + "\n".join(lines)
+    return title, message

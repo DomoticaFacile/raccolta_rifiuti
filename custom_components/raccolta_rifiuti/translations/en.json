@@ -1,0 +1,91 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Waste Collection",
+        "description": "Choose the calendar where you entered the collections (usually `calendar.raccolta_rifiuti`). Telegram notifications are enabled afterwards, from Configure.",
+        "data": {
+          "calendar_entity_id": "Calendar",
+          "name": "Sensor name (optional)",
+          "lookahead_days": "Days to look ahead for the next collection",
+          "language": "Sensor language"
+        },
+        "data_description": {
+          "name": "Leave empty to use the automatic name.",
+          "lookahead_days": "If nothing is scheduled today, the sensor looks for the next collection within this many days.",
+          "language": "Language of the waste names shown by the sensor. Automatic follows Home Assistant's language."
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "A sensor already exists for this calendar."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Waste Collection",
+        "menu_options": {
+          "general": "General settings",
+          "telegram": "Telegram notifications"
+        }
+      },
+      "general": {
+        "title": "General settings",
+        "data": {
+          "name": "Sensor name (optional)",
+          "lookahead_days": "Days to look ahead for the next collection",
+          "language": "Sensor language"
+        },
+        "data_description": {
+          "name": "Leave empty to use the automatic name.",
+          "lookahead_days": "If nothing is scheduled today, the sensor looks for the next collection within this many days.",
+          "language": "Language of the waste names shown by the sensor. Automatic follows Home Assistant's language."
+        }
+      },
+      "telegram": {
+        "title": "Telegram notifications",
+        "description": "Every evening you get a Telegram message with the waste to put out. It is only sent if a collection is scheduled. Requires Home Assistant's Telegram bot integration with at least one allowed chat.",
+        "data": {
+          "telegram_enabled": "Enable Telegram notifications",
+          "telegram_targets": "Recipients",
+          "notify_time": "Notification time",
+          "notify_second_enabled": "Also send a second notification",
+          "notify_second_time": "Second notification time",
+          "notify_language": "Message language",
+          "notify_emoji": "Use emojis",
+          "notify_title": "Message title (optional)"
+        },
+        "data_description": {
+          "telegram_targets": "The Telegram chats the message is sent to.",
+          "notify_second_time": "Only used if the second notification is enabled.",
+          "notify_language": "Automatic follows Home Assistant's language.",
+          "notify_title": "Leave empty for the automatic title. If your bot uses Markdown, avoid the characters . ! - ( ) in the title."
+        }
+      }
+    },
+    "error": {
+      "no_targets": "Select at least one recipient.",
+      "invalid_target": "Select only chats from the Telegram bot integration.",
+      "same_time": "The second notification must have a different time from the first."
+    },
+    "abort": {
+      "telegram_not_available": "No Telegram chat found. First set up Home Assistant's Telegram bot integration and add a chat to the allowed ones."
+    }
+  },
+  "selector": {
+    "language": {
+      "options": {
+        "auto": "Automatic (same as Home Assistant)",
+        "it": "Italiano",
+        "en": "English"
+      }
+    }
+  },
+  "issues": {
+    "deprecated_yaml": {
+      "title": "Raccolta Rifiuti YAML configuration is deprecated",
+      "description": "The sensor was imported automatically and is now managed from Settings > Devices & services > Waste Collection, where you can also enable Telegram notifications. Remove the `platform: raccolta_rifiuti` entry from configuration.yaml and restart Home Assistant."
+    }
+  }
+}
