@@ -29,7 +29,9 @@ Video Tutorial YouTube: https://www.youtube.com/watch?v=v-wM2uAQTRg
 ✅ Crea il sensore `sensor.raccolta_rifiuti`  
 ✅ Include attributo `collection_types` (es: `"Plastica", "Carta"`)  
 ✅ Compatibile con template e card HTML personalizzate  
-✅ Supporta immagini per ogni tipo di rifiuto
+✅ Supporta immagini per ogni tipo di rifiuto  
+✅ Configurazione da interfaccia, in italiano e inglese  
+✅ Notifiche serali su Telegram (facoltative)
 
 ---
 
@@ -45,25 +47,49 @@ Video Tutorial YouTube: https://www.youtube.com/watch?v=v-wM2uAQTRg
 
 ## 🧾 Configurazione
 
-Aggiungi nel tuo `configuration.yaml`:
+1. Crea il calendario locale (vedi **Creazione del calendario locale** più sotto)
+2. Vai su **Impostazioni > Dispositivi e servizi > Aggiungi integrazione**, cerca **Raccolta Rifiuti** e scegli il calendario
+3. In qualsiasi momento puoi cambiare le impostazioni da **Impostazioni > Dispositivi e servizi > Raccolta Rifiuti > Configura**
 
-```yaml
-sensor:
-  - platform: raccolta_rifiuti
-    calendar_entity_id: calendar.raccolta_rifiuti
-    # language: auto        # opzionale: "auto" (default, segue la lingua di Home Assistant), "it" oppure "en"
-    # lookahead_days: 7     # opzionale (default 7): entro quanti giorni cercare la prossima raccolta se oggi non c'è nulla
-    # scan_interval: "00:30:00"  # opzionale: intervallo di aggiornamento (default 30 minuti)
-```
+Impostazioni disponibili:
+- **Nome del sensore** (facoltativo, lascia vuoto per il nome automatico)
+- **Giorni in cui cercare la prossima raccolta** (`lookahead_days`, default 7)
+- **Lingua del sensore**: automatica (segue la lingua di Home Assistant), italiano o inglese
+- **Notifiche Telegram** (vedi più sotto)
 
-🌍 **Multi-lingua**: puoi scrivere gli eventi del calendario in italiano o in inglese (es. "Carta" o "Paper"), vengono riconosciuti entrambi. L'opzione `language` controlla solo la lingua di *visualizzazione* dello stato e degli attributi del sensore (default: segue la lingua configurata in Home Assistant). È disponibile anche l'attributo `collection_type_codes`, con valori stabili in inglese (es. `"paper"`, `"glass"`), utile per chi vuole scrivere template Lovelace indipendenti dalla lingua.
+> ♻️ **Se usavi la configurazione YAML** (`platform: raccolta_rifiuti` in `configuration.yaml`) non devi fare nulla: al primo avvio dopo l'aggiornamento il sensore viene importato automaticamente, con lo stesso `entity_id` e lo stesso storico. Home Assistant ti mostrerà un avviso in Riparazioni. Dopo aver verificato in **Dispositivi e servizi** che l'integrazione sia presente, rimuovi dal YAML l'intera voce del sensore (`platform: raccolta_rifiuti`, `calendar_entity_id` e le altre opzioni della stessa voce; se `sensor:` resta vuoto, togli anche quella riga) e riavvia. L'intervallo di aggiornamento (`scan_interval`) non è più configurabile: il sensore si aggiorna ogni 30 minuti.
 
-📅 **Prossima raccolta (`lookahead_days`)**: `state` e `collection_types` continuano a descrivere solo la raccolta di **oggi** (nessuna modifica per chi già usa l'integrazione). In più, se oggi non c'è nulla, il sensore cerca in avanti entro `lookahead_days` giorni e popola:
+🌍 **Multi-lingua**: puoi scrivere gli eventi del calendario in italiano o in inglese (es. "Carta" o "Paper"), vengono riconosciuti entrambi. L'opzione lingua controlla solo la lingua di *visualizzazione* dello stato e degli attributi del sensore (default: segue la lingua configurata in Home Assistant). È disponibile anche l'attributo `collection_type_codes`, con valori stabili in inglese (es. `"paper"`, `"glass"`), utile per chi vuole scrivere template Lovelace indipendenti dalla lingua.
+
+📅 **Prossima raccolta (`lookahead_days`)**: `state` e `collection_types` descrivono solo la raccolta di **oggi**. In più, se oggi non c'è nulla, il sensore cerca in avanti entro `lookahead_days` giorni e popola:
 - `days_remaining`: giorni mancanti alla prossima raccolta trovata (`0` se è oggi)
 - `next_collection_date`: data della prossima raccolta (`YYYY-MM-DD`)
 - `next_collection_types` / `next_collection_type_codes`: tipi previsti in quella data
 
-Riavvia Home Assistant
+---
+
+📲 **Notifiche Telegram**
+
+Ogni sera ricevi su Telegram i rifiuti da mettere fuori, con una emoji per ogni tipo:
+
+```
+🗑️ Raccolta rifiuti
+Domani verrà raccolto:
+📄 Carta
+🍾 Vetro
+```
+
+**Requisiti**: l'integrazione [**Telegram bot**](https://my.home-assistant.io/redirect/config_flow_start/?domain=telegram_bot) di Home Assistant (clicca per aggiungerla), configurata da interfaccia, con la tua chat tra gli ID chat consentiti.
+
+> 💡 Le chat che puoi scegliere come destinatari sono quelle aggiunte in **Telegram bot** con il pulsante **+ Aggiungi ID chat consentito** (l'ID numerico della chat lo ottieni, ad esempio, scrivendo a @userinfobot). Se l'elenco è vuoto, Home Assistant non ha ancora nessuna chat: aggiungila lì e riapri **Configura**.
+
+**Attivazione**: **Impostazioni > Dispositivi e servizi > Raccolta Rifiuti > Configura > Notifiche Telegram**, poi scegli:
+- **Attiva le notifiche Telegram**
+- **Destinatari**: una o più chat del tuo bot
+- **Orario della notifica** (default 20:00) ed eventualmente una **seconda notifica** (default 20:30)
+- **Lingua del messaggio** (automatica, italiano o inglese), **emoji** e **titolo** personalizzato
+
+Le notifiche sono disattivate finché non le attivi. Il messaggio parte solo se c'è una raccolta in programma. Usa gli stessi dati del sensore (gli eventi inseriti nel calendario il giorno prima), per questo dice sempre "Domani verrà raccolto". Il testo usa solo caratteri semplici, quindi funziona con qualsiasi formattazione impostata sul bot; se usi Markdown evita i caratteri `. ! - ( )` nel titolo personalizzato.
 
 ---
 
@@ -291,6 +317,8 @@ YouTube Tutorial Video: https://www.youtube.com/watch?v=v-wM2uAQTRg
 ✅ Includes attribute `collection_types` (e.g. `"Plastic", "Paper"`)  
 ✅ Compatible with templates and custom HTML cards  
 ✅ Supports images for each waste type  
+✅ Set up from the UI, in Italian and English  
+✅ Optional evening notifications on Telegram  
 
 ---
 
@@ -306,25 +334,51 @@ YouTube Tutorial Video: https://www.youtube.com/watch?v=v-wM2uAQTRg
 
 ## 🧾 Configuration
 
-Add this to your `configuration.yaml`:
+1. Create the local calendar (see **Creating the Local Calendar** below)
+2. Go to **Settings > Devices & services > Add integration**, search for **Raccolta Rifiuti** and choose the calendar
+3. You can change the settings at any time from **Settings > Devices & services > Raccolta Rifiuti > Configure**
 
-```yaml
-sensor:
-  - platform: raccolta_rifiuti
-    calendar_entity_id: calendar.raccolta_rifiuti
-    # language: auto             # optional: "auto" (default, follows Home Assistant's language), "it" or "en"
-    # lookahead_days: 7          # optional (default 7): how many days ahead to look for the next collection if today has none
-    # scan_interval: "00:30:00"  # optional: update interval (default 30 minutes)
-```
+Available settings:
+- **Sensor name** (optional, leave empty for the automatic name)
+- **Days to look ahead for the next collection** (`lookahead_days`, default 7)
+- **Sensor language**: automatic (follows Home Assistant's language), Italian or English
+- **Telegram notifications** (see below)
 
-🌍 **Multi-language**: calendar events can be written in Italian or English (e.g. "Carta" or "Paper"), both are recognized. The `language` option only controls the *display* language of the sensor's state and attributes (default: follows Home Assistant's configured language). A `collection_type_codes` attribute is also available, with stable English identifiers (e.g. `"paper"`, `"glass"`), handy for building Lovelace templates that shouldn't depend on the display language.
+> ♻️ **If you used the YAML configuration** (`platform: raccolta_rifiuti` in `configuration.yaml`) you don't need to do anything: on the first start after the update the sensor is imported automatically, with the same `entity_id` and history. Home Assistant will show a notice under Repairs. After checking in **Devices & services** that the integration is there, remove the whole sensor entry from the YAML (`platform: raccolta_rifiuti`, `calendar_entity_id` and any other options of the same entry; if `sensor:` is left empty, remove that line too) and restart. The update interval (`scan_interval`) is no longer configurable: the sensor updates every 30 minutes.
 
-📅 **Next collection (`lookahead_days`)**: `state` and `collection_types` keep describing only **today's** collection (no change for existing users). In addition, if nothing is scheduled today, the sensor looks ahead up to `lookahead_days` days and populates:
+🌍 **Multi-language**: calendar events can be written in Italian or English (e.g. "Carta" or "Paper"), both are recognized. The language option only controls the *display* language of the sensor's state and attributes (default: follows Home Assistant's configured language). A `collection_type_codes` attribute is also available, with stable English identifiers (e.g. `"paper"`, `"glass"`), handy for building Lovelace templates that shouldn't depend on the display language.
+
+📅 **Next collection (`lookahead_days`)**: `state` and `collection_types` describe only **today's** collection. In addition, if nothing is scheduled today, the sensor looks ahead up to `lookahead_days` days and populates:
 - `days_remaining`: days until the next collection found (`0` if it's today)
 - `next_collection_date`: date of the next collection (`YYYY-MM-DD`)
 - `next_collection_types` / `next_collection_type_codes`: expected types on that date
 
-Restart Home Assistant.
+---
+
+📲 **Telegram notifications**
+
+Every evening you get a Telegram message with the waste to put out, with one emoji per type:
+
+```
+🗑️ Waste collection
+Tomorrow's collection:
+📄 Paper
+🍾 Glass
+```
+
+**Requirements**: Home Assistant's [**Telegram bot**](https://my.home-assistant.io/redirect/config_flow_start/?domain=telegram_bot) integration (click to add it), set up from the UI, with your chat among the allowed chat IDs.
+
+> 💡 The chats you can pick as recipients are the ones added in **Telegram bot** with the **+ Add allowed chat ID** button (you can get a chat's numeric ID, for example, by messaging @userinfobot). If the list is empty, Home Assistant has no chat yet: add it there and reopen **Configure**.
+
+**How to enable**: **Settings > Devices & services > Raccolta Rifiuti > Configure > Telegram notifications**, then choose:
+- **Enable Telegram notifications**
+- **Recipients**: one or more chats of your bot
+- **Notification time** (default 20:00) and optionally a **second notification** (default 20:30)
+- **Message language** (automatic, Italian or English), **emojis** and a custom **title**
+
+Notifications are off until you enable them. The message is only sent if a collection is scheduled. It uses the same data as the sensor (the calendar events entered the day before), which is why it always says "Tomorrow's collection". The text only uses simple characters, so it works with any formatting set on the bot; if you use Markdown, avoid the characters `. ! - ( )` in a custom title.
+
+---
 
 📆 Creating the Local Calendar (manual setup)
 
